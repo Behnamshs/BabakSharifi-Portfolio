@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Certificates</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(59,130,246,0.20), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(16,185,129,0.16), transparent 28%),
+        linear-gradient(135deg, #0f172a, #111827, #1e293b);
+      color: #e5e7eb;
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding: 0 0 80px;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: min(1180px, 92%);
+      margin: 0 auto;
+    }
+
+    .navbar {
+      padding: 24px 0;
+      position: relative;
+      z-index: 10;
+    }
+
+    .nav-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-radius: 22px;
+      padding: 14px 22px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
+    }
+
+    .logo {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.4px;
+    }
+
+    .logo span {
+      color: #93c5fd;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.95rem;
+      color: #cbd5e1;
+      transition: 0.3s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: #93c5fd;
+    }
+
+    .certificates-hero {
+      padding: 55px 0 42px;
+      text-align: center;
+    }
+
+    .page-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 15px;
+      border-radius: 999px;
+      background: rgba(59, 130, 246, 0.14);
+      border: 1px solid rgba(96, 165, 250, 0.22);
+      color: #bfdbfe;
+      font-size: 0.92rem;
+      margin-bottom: 20px;
+    }
+
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      background: #22c55e;
+      border-radius: 50%;
+      box-shadow: 0 0 18px rgba(34, 197, 94, 0.8);
+    }
+
+    .page-title {
+      font-size: clamp(2.4rem, 5vw, 4.5rem);
+      line-height: 1.1;
+      color: #ffffff;
+      margin-bottom: 18px;
+      letter-spacing: -1.2px;
+    }
+
+    .page-title span {
+      background: linear-gradient(135deg, #93c5fd, #5eead4);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .page-subtitle {
+      max-width: 760px;
+      margin: 0 auto;
+      color: #cbd5e1;
+      line-height: 1.9;
+      font-size: 1.02rem;
+    }
+
+    .cards-section {
+      padding-top: 22px;
+    }
+
+    .cards-grid {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .column {
+      flex: 1 1 0;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 26px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: 0 24px 55px rgba(0, 0, 0, 0.24);
+      transition: 0.35s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(96,165,250,0.32);
+      background: rgba(255,255,255,0.10);
+      box-shadow: 0 32px 70px rgba(0, 0, 0, 0.32);
+    }
+
+    .card-image {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at center, rgba(59,130,246,0.18), transparent 34%),
+        linear-gradient(135deg, rgba(15,23,42,0.96), rgba(30,41,59,0.96));
+      cursor: pointer;
+    }
+
+    .card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.45s ease;
+    }
+
+    .card:hover .card-image img {
+      transform: scale(1.06);
+    }
+
+    .card-image::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(15,23,42,0.48), transparent 55%);
+      pointer-events: none;
+    }
+
+    .fullscreen-btn {
+      position: absolute;
+      bottom: 14px;
+      right: 14px;
+      width: 42px;
+      height: 42px;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      color: #ffffff;
+      background: rgba(15, 23, 42, 0.62);
+      border: 1px solid rgba(255,255,255,0.16);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      display: grid;
+      place-items: center;
+      z-index: 2;
+      transition: 0.3s ease;
+    }
+
+    .fullscreen-btn:hover {
+      background: rgba(59, 130, 246, 0.32);
+      border-color: rgba(147,197,253,0.38);
+      transform: scale(1.06);
+    }
+
+    .fullscreen-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+
+    .card-body {
+      padding: 20px 20px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .card-tag {
+      display: inline-flex;
+      align-self: flex-start;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(59,130,246,0.14);
+      border: 1px solid rgba(96,165,250,0.18);
+      color: #bfdbfe;
+      font-size: 0.78rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    .desc-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .card-desc {
+      color: #cbd5e1;
+      font-size: 0.95rem;
+      line-height: 1.9;
+      margin: 0;
+    }
+
+    .desc-wrapper .card-desc {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .desc-wrapper.expanded .card-desc {
+      display: block;
+      overflow: visible;
+    }
+
+    .toggle-desc {
+      background: none;
+      border: none;
+      padding: 0;
+      color: #93c5fd;
+      cursor: pointer;
+      font-size: 0.92rem;
+      font-weight: 600;
+      transition: 0.25s ease;
+    }
+
+    .toggle-desc:hover {
+      color: #bfdbfe;
+      text-decoration: underline;
+    }
+
+    .lightbox-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+      padding: 24px;
+    }
+
+    .lightbox-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .lightbox-overlay img {
+      max-width: min(1100px, 92vw);
+      max-height: 88vh;
+      object-fit: contain;
+      border-radius: 18px;
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(255,255,255,0.14);
+    }
+
+    .close-lightbox {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      width: 46px;
+      height: 46px;
+      border: none;
+      border-radius: 16px;
+      cursor: pointer;
+      background: rgba(255,255,255,0.09);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: #ffffff;
+      font-size: 1.8rem;
+      line-height: 1;
+      transition: 0.3s ease;
+    }
+
+    .close-lightbox:hover {
+      background: rgba(239,68,68,0.26);
+      border-color: rgba(248,113,113,0.35);
+      transform: scale(1.06);
+    }
+
+    @media (max-width: 760px) {
+      .cards-grid {
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav-content {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 14px;
+      }
+
+      .certificates-hero {
+        padding-top: 35px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="container">
+      <nav class="nav-content">
+        <a href="../index.html" class="logo">My<span>Portfolio</span></a>
+
+        <ul class="nav-links">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../article/article.html">Articles</a></li>
+          <li><a href="certificates.html" class="active">Certificates</a></li>
+          <li><a href="../about-me.html">About Me</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="certificates-hero">
+      <div class="container">
+        <div class="page-badge">
+          <span class="badge-dot"></span>
+          Academic & Professional Achievements
+        </div>
+
+        <h1 class="page-title">My <span>Certificates</span></h1>
+
+        <p class="page-subtitle">
+          A curated collection of academic, technical, and professional certificates
+          reflecting continuous learning, interdisciplinary development, and research-oriented growth.
+        </p>
+      </div>
+    </section>
+
+    <section class="cards-section">
+      <div class="container">
+        <div id="cardsGrid" class="cards-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="lightbox" class="lightbox-overlay">
+    <button id="closeLightbox" class="close-lightbox" aria-label="Close image">&times;</button>
+    <img id="lightboxImg" src="" alt="Fullscreen certificate image">
+  </div>
+
+  <script>
+    (function() {
+      const cardsData = [
+        {
+          id: 1,
+          img: 'img/1.jpg',
+          title: 'TrueScan Nexus – Multilayer Truth Verification Framework',
+          description: 'A comprehensive, multi‑parametric truth assessment system integrating biosignals, micro‑expressive thermal patterns, behavioral dynamics, and machine‑learning inference models. TrueScan Nexus operates through hierarchical data fusion—physiological, behavioral, and contextual layers—to generate a probabilistic integrity score. The platform is designed for next‑generation lie detection, cognitive-load analysis, and human–machine trust interfaces.'
+        },
+        {
+          id: 2,
+          img: 'img/2.jpg',
+          title: 'AID‑BED – Autonomous & Intelligent Disposal Bed',
+          description: 'A next‑generation smart hospital bed engineered for automated waste handling, continuous patient monitoring, motion assistance, and multi-tier safety management. The system merges electromechanical automation with biosensing and workflow logic to reduce contamination risks, improve hygiene, and enhance the safety and efficiency of clinical staff in high‑demand healthcare environments.'
+        },
+        {
+          id: 3,
+          img: 'img/3.jpg',
+          title: 'Gluco‑Vision – Non‑Invasive Salivary Glucose Monitoring Platform',
+          description: 'A non‑invasive glucose‑monitoring solution utilizing nano‑biosensors, microfluidics, and physics‑informed AI models to estimate blood glucose levels from salivary biomarkers. Gluco‑Vision provides needle‑free glucose assessment with adaptive calibration and high sensitivity, enabling comfortable, continuous metabolic monitoring for diabetes management.'
+        },
+        {
+          id: 4,
+          img: 'img/4.jpg',
+          title: 'IAHM – Integrated Astronaut Health Monitoring System',
+          description: 'A fully integrated, multi‑fluid health monitoring architecture tailored for long‑duration space missions. IAHM combines wearable and ingestible biosensors, hierarchical AI fusion models, and a Composite Health Index (CHI) to deliver predictive, real‑time assessments of astronaut physiological status under microgravity. The system focuses on early detection of cardiovascular, metabolic, and hydration-related anomalies.'
+        },
+        {
+          id: 5,
+          img: 'img/5.jpg',
+          title: 'Multimodal Non‑Invasive Glucose Estimation System',
+          description: 'A machine‑learning–driven glucose estimation platform that analyzes PPG, ECG, skin temperature, and GSR signals to infer blood glucose levels without the need for blood sampling. The system leverages multimodal biosignal fusion, temporal modeling, and personalized calibration to enable continuous, comfortable glucose tracking.'
+        },
+        {
+          id: 6,
+          img: 'img/6.jpg',
+          title: 'Multimodal Cardiovascular Risk Prediction System',
+          description: 'A predictive health analytics framework integrating ECG, heart-rate variability, sleep quality, physical activity, and additional physiological parameters to estimate early cardiovascular risks. Using temporal machine‑learning models, the system identifies early warning patterns for arrhythmias, hypertension, and acute cardiac events—enabling proactive, personalized prevention.'
+        },
+        {
+          id: 7,
+          img: 'img/7.jpg',
+          title: 'Metabolic Palm Scanner – SERS & Thermal Hybrid Analyzer',
+          description: 'A handheld diagnostic device combining Surface‑Enhanced Raman Spectroscopy (SERS) with thermal micro‑pattern imaging to extract metabolic signatures from the palm. The system evaluates mitochondrial activity, oxidative stress levels, and metabolic health states through a dual‑modality sensing approach, offering a rapid, non‑invasive metabolic assessment.'
+        },
+        {
+          id: 8,
+          img: 'img/8.jpg',
+          title: 'Microbiota‑Watch Capsule – Early GI Cancer VOC Detector',
+          description: 'A disposable ingestible capsule designed to detect volatile organic compounds (VOCs) associated with early‑stage gastrointestinal cancers. Leveraging advanced gas‑sensing arrays and on‑board analytics, the capsule identifies metabolic biomarkers linked to gastric, intestinal, and colorectal malignancies, enabling ultra‑early and non‑invasive cancer screening.'
+        },
+        {
+          id: 9,
+          img: 'img/9.jpg',
+          title: 'Smart Pre‑Drug Wound Patch – Closed‑Loop Therapeutic System',
+          description: 'A bio‑responsive wound patch equipped with infection‑sensing micro‑biosensors and controlled drug‑release reservoirs. Upon detecting pathogenic biomarkers, the system autonomously administers therapeutic agents—such as antibiotics—in a closed‑loop fashion. This platform is designed for chronic wounds, diabetic ulcers, and infection‑prone injuries.'
+        },
+        {
+          id: 10,
+          img: 'img/10.jpg',
+          title: 'Gut Health Monitoring with Ingestible and Wearable Biosensors',
+          description: 'An integrated gastrointestinal health tracking system that utilizes ingestible capsules and wearable sensors to measure pH, temperature, motility, and gas biomarkers. Data is processed through AI‑based pattern analysis to assess gut function, microbiome activity, and early signs of gastrointestinal disorders, enabling personalized digestive‑health monitoring.'
+        },
+        {
+          id:11,
+          img: 'img/11.jpg',
+          title: 'Mental Health Monitoring via Sweat Biomarkers',
+          description: 'A non‑invasive mental‑health assessment platform analyzing sweat‑based biomarkers such as cortisol, alpha‑amylase, and electrolytes. With temporal AI modeling, the system derives real‑time stress and anxiety indices, offering continuous emotional‑state monitoring for research, mental‑health management, and human–machine interaction studies.'
+        }
+      ];
+
+      const cardsGrid = document.getElementById('cardsGrid');
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightboxImg');
+      const closeLightboxBtn = document.getElementById('closeLightbox');
+
+      function openLightbox(imgUrl) {
+        lightboxImg.src = imgUrl;
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+        lightboxImg.src = '';
+        document.body.style.overflow = '';
+      }
+
+      closeLightboxBtn.addEventListener('click', closeLightbox);
+
+      lightbox.addEventListener('click', function(e) {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+          closeLightbox();
+        }
+      });
+
+      function createCardElement(cardData) {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.setAttribute('data-card-id', cardData.id);
+
+        const imgContainer = document.createElement('div');
+        imgContainer.className = 'card-image';
+
+        const img = document.createElement('img');
+        img.src = cardData.img;
+        img.alt = cardData.title;
+        img.loading = 'lazy';
+
+        img.addEventListener('click', function() {
+          openLightbox(cardData.img);
+        });
+
+        const fsBtn = document.createElement('button');
+        fsBtn.className = 'fullscreen-btn';
+        fsBtn.setAttribute('aria-label', 'Open fullscreen image');
+        fsBtn.innerHTML = `
+          <svg viewBox="0 0 24 24">
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <polyline points="9 21 3 21 3 15"></polyline>
+            <line x1="21" y1="3" x2="14" y2="10"></line>
+            <line x1="3" y1="21" x2="10" y2="14"></line>
+          </svg>
+        `;
+
+        fsBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          openLightbox(cardData.img);
+        });
+
+        imgContainer.appendChild(img);
+        imgContainer.appendChild(fsBtn);
+
+        const body = document.createElement('div');
+        body.className = 'card-body';
+
+        const tag = document.createElement('span');
+        tag.className = 'card-tag';
+        tag.textContent = 'Certificate';
+
+        const titleEl = document.createElement('h3');
+        titleEl.className = 'card-title';
+        titleEl.textContent = cardData.title;
+
+        const descWrapper = document.createElement('div');
+        descWrapper.className = 'desc-wrapper';
+
+        const desc = document.createElement('p');
+        desc.className = 'card-desc';
+        desc.textContent = cardData.description;
+
+        const toggleBtn = document.createElement('a');
+        toggleBtn.href = '#';
+        toggleBtn.className = 'toggle-desc';
+        toggleBtn.textContent = 'more';
+
+        toggleBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          descWrapper.classList.toggle('expanded');
+          toggleBtn.textContent = descWrapper.classList.contains('expanded') ? 'less' : 'more';
+        });
+
+        descWrapper.appendChild(desc);
+        descWrapper.appendChild(toggleBtn);
+
+        body.appendChild(tag);
+        body.appendChild(titleEl);
+        body.appendChild(descWrapper);
+
+        card.appendChild(imgContainer);
+        card.appendChild(body);
+
+        return card;
+      }
+
+      function getColumnCount() {
+        const width = window.innerWidth;
+        if (width < 768) return 1;
+        if (width < 992) return 2;
+        return 3;
+      }
+
+      function renderCards() {
+        const colCount = getColumnCount();
+        cardsGrid.innerHTML = '';
+
+        const columns = [];
+        for (let i = 0; i < colCount; i++) {
+          const col = document.createElement('div');
+          col.className = 'column';
+          cardsGrid.appendChild(col);
+          columns.push(col);
+        }
+
+        cardsData.forEach((cardData, index) => {
+          const colIndex = index % colCount;
+          const cardEl = createCardElement(cardData);
+          columns[colIndex].appendChild(cardEl);
+        });
+      }
+
+      renderCards();
+
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          renderCards();
+        }, 150);
+      });
+    })();
+  </script>
+</body>
+</html>

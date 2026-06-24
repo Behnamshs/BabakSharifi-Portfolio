@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>گالری کارت‌های تصویری</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f5f7;
+            padding: 2rem 1rem;
+            color: #2c3e50;
+            min-height: 100vh;
+        }
+
+        h1.page-title {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            font-size: 2.2rem;
+            color: #1e293b;
+        }
+
+        /* ----- نگهدارنده اصلی ----- */
+        .cards-grid {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            align-items: flex-start;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* ----- هر ستون یک واحد مستقل ----- */
+        .column {
+            flex: 1 1 0;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* ----- خود کارت ----- */
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: box-shadow 0.3s;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ----- بخش تصویر ----- */
+        .card-image {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            background: #e2e8f0;
+            cursor: pointer;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s;
+        }
+
+        .card:hover .card-image img {
+            transform: scale(1.03);
+        }
+
+        /* دکمه فول‌اسکرین پایین سمت راست */
+        .fullscreen-btn {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.55);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .fullscreen-btn:hover {
+            background: rgba(0, 0, 0, 0.75);
+            transform: scale(1.1);
+        }
+
+        .fullscreen-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+        }
+
+        /* ----- محتوای متنی ----- */
+        .card-body {
+            padding: 1.2rem 1.2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            flex: 1;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0;
+        }
+
+        .desc-wrapper {
+            position: relative;
+        }
+
+        .desc-text {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: #475569;
+            max-height: 3.6em; /* دو خط */
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            margin: 0;
+        }
+
+        .desc-text.expanded {
+            max-height: 500px; /* بعداً با js به اندازه واقعی تنظیم می‌شود */
+        }
+
+        .toggle-desc {
+            display: inline-block;
+            color: #2563eb;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 0.3rem;
+            background: none;
+            border: none;
+            padding: 0;
+            transition: color 0.2s;
+        }
+
+        .toggle-desc:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+
+        /* ----- فول‌اسکرین مودال ----- */
+        .lightbox-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.92);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .lightbox-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox-overlay img {
+            max-width: 92%;
+            max-height: 92%;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .close-lightbox {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 2.5rem;
+            color: #fff;
+            cursor: pointer;
+            background: none;
+            border: none;
+            line-height: 1;
+            transition: transform 0.2s;
+        }
+
+        .close-lightbox:hover {
+            transform: scale(1.2);
+        }
+
+        /* ----- واکنش‌گرایی ----- */
+        @media (max-width: 768px) {
+            .cards-grid {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 class="page-title">🖼️ گالری کارت‌های تصویری</h1>
+
+    <!-- ظرف اصلی که ستون‌ها توسط جاوااسکریپت ساخته می‌شوند -->
+    <div id="cardsGrid" class="cards-grid"></div>
+
+    <!-- مودال فول‌اسکرین -->
+    <div id="lightbox" class="lightbox-overlay">
+        <button id="closeLightbox" class="close-lightbox">&times;</button>
+        <img id="lightboxImg" src="" alt="تصویر فول‌اسکرین">
+    </div>
+
+    <script>
+        (function() {
+            // ========================
+            // داده‌های نمونه برای کارت‌ها
+            // ========================
+            const cardsData = [
+                {
+                    id: 1,
+                    img: 'img/1.jpg',
+                    title: 'قله دماوند',
+                    desc: 'دماوند بلندترین کوه ایران است. این کوه با ارتفاع ۵۶۱۰ متر در استان مازندران قرار دارد و هر ساله کوهنوردان بسیاری را به خود جذب می‌کند. طبیعت بکر و چشمه‌های آب گرم در اطراف آن دیده می‌شود.',
+                    expanded: false
+                },
+                {
+                    id: 2,
+                    img: 'img/2.jpg',
+                    title: 'دریای خزر',
+                    desc: 'دریای خزر بزرگترین دریاچه جهان است. سواحل زیبای آن در شمال ایران پذیرای گردشگران فراوانی می‌باشد. امکانات تفریحی متنوعی مانند قایق‌سواری و شنا در این منطقه وجود دارد.',
+                    expanded: false
+                },
+                {
+                    id: 3,
+                    img: 'img/3.jpg',
+                    title: 'جنگل‌های شمال',
+                    desc: 'جنگل‌های هیرکانی در شمال ایران از قدیمی‌ترین جنگل‌های جهان هستند. این جنگل‌ها پوشش گیاهی بسیار غنی دارند و گونه‌های جانوری نادری در آن‌ها زندگی می‌کنند.',
+                    expanded: false
+                },
+                {
+                    id: 4,
+                    img: 'img/4.jpg',
+                    title: 'کویر لوت',
+                    desc: 'کویر لوت یکی از گرمترین نقاط کره زمین است. تپه‌های شنی و کلوت‌های شگفت‌انگیز آن مناظر خارق‌العاده‌ای را خلق کرده‌اند که گردشگران ماجراجو را به سوی خود می‌کشاند.',
+                    expanded: false
+                },
+                {
+                    id: 5,
+                    img: 'img/5.jpg',
+                    title: 'شهر اصفهان',
+                    desc: 'اصفهان با آثار تاریخی باشکوه مانند میدان نقش جهان و پل‌های تاریخی، یکی از مقاصد اصلی گردشگری ایران به شمار می‌رود. صنایع دستی زیبا و غذاهای محلی نیز از جذابیت‌های این شهر هستند.',
+                    expanded: false
+                },
+                {
+                    id: 6,
+                    img: 'img/6.jpg',
+                    title: 'روستای ابیانه',
+                    desc: 'ابیانه روستایی تاریخی با خانه‌های سرخ‌رنگ است. مردم این روستا آداب و سنن قدیمی خود را حفظ کرده‌اند و لباس‌های محلی زیبایی می‌پوشند.',
+                    expanded: false
+                },
+                {
+                    id: 7,
+                    img: 'img/7.jpg',
+                    title: 'باغ فین کاشان',
+                    desc: 'باغ فین یکی از زیباترین باغ‌های ایرانی است. این باغ با آبنماها و درختان سرسبز، نمونه‌ای بی‌نظیر از معماری باغ‌سازی ایرانی را به نمایش می‌گذارد.',
+                    expanded: false
+                },
+                {
+                    id: 8,
+                    img: 'img/8.jpg',
+                    title: 'دریاچه ارومیه',
+                    desc: 'دریاچه ارومیه در شمال غرب ایران قرار دارد. این دریاچه زمانی یکی از بزرگترین دریاچه‌های آب شور جهان بود و اکنون تلاش‌های زیادی برای احیای آن انجام می‌شود.',
+                    expanded: false
+                },
+                {
+                    id: 9,
+                    img: 'img/9.jpg',
+                    title: 'سد کرخه',
+                    desc: 'سد کرخه یکی از بزرگترین سدهای ایران است. این سد بر روی رودخانه کرخه در استان خوزستان ساخته شده و نقش مهمی در کنترل سیلاب و تأمین آب کشاورزی دارد.',
+                    expanded: false
+                }
+            ];
+
+            // ========================
+            // ارجاعات DOM
+            // ========================
+            const cardsGrid = document.getElementById('cardsGrid');
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightboxImg');
+            const closeLightboxBtn = document.getElementById('closeLightbox');
+
+            // ========================
+            // رویداد فول‌اسکرین (مودال)
+            // ========================
+            function openLightbox(imgUrl) {
+                lightboxImg.src = imgUrl;
+                lightbox.classList.add('active');
+            }
+
+            function closeLightbox() {
+                lightbox.classList.remove('active');
+                lightboxImg.src = '';
+            }
+
+            closeLightboxBtn.addEventListener('click', closeLightbox);
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === lightbox) closeLightbox();
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                    closeLightbox();
+                }
+            });
+
+            // ========================
+            // ساخت یک کارت
+            // ========================
+            function createCardElement(cardData) {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.setAttribute('data-card-id', cardData.id);
+
+                // تصویر و دکمه فول‌اسکرین
+                const imgContainer = document.createElement('div');
+                imgContainer.className = 'card-image';
+
+                const img = document.createElement('img');
+                img.src = cardData.img;
+                img.alt = cardData.title;
+                img.loading = 'lazy';
+
+                const fsBtn = document.createElement('button');
+                fsBtn.className = 'fullscreen-btn';
+                fsBtn.setAttribute('aria-label', 'مشاهده تمام‌صفحه');
+                fsBtn.innerHTML = `
+                    <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <polyline points="9 21 3 21 3 15"></polyline>
+                        <line x1="21" y1="3" x2="14" y2="10"></line>
+                        <line x1="3" y1="21" x2="10" y2="14"></line>
+                    </svg>`;
+                fsBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openLightbox(cardData.img);
+                });
+
+                imgContainer.appendChild(img);
+                imgContainer.appendChild(fsBtn);
+                card.appendChild(imgContainer);
+
+                // بدنه کارت
+                const body = document.createElement('div');
+                body.className = 'card-body';
+
+                const titleEl = document.createElement('h3');
+                titleEl.className = 'card-title';
+                titleEl.textContent = cardData.title;
+
+                const descWrapper = document.createElement('div');
+                descWrapper.className = 'desc-wrapper';
+
+                const descText = document.createElement('p');
+                descText.className = 'desc-text';
+                descText.textContent = cardData.desc;
+
+                const toggleBtn = document.createElement('button');
+                toggleBtn.className = 'toggle-desc';
+                toggleBtn.textContent = cardData.expanded ? 'کمتر' : 'بیشتر...';
+
+                // منطق باز/بسته کردن توضیحات
+                function setExpanded(state) {
+                    cardData.expanded = state;
+                    if (state) {
+                        // تنظیم max-height به اندازه واقعی محتوا
+                        descText.style.maxHeight = descText.scrollHeight + 'px';
+                        descText.classList.add('expanded');
+                        toggleBtn.textContent = 'کمتر';
+                    } else {
+                        descText.style.maxHeight = '3.6em';
+                        descText.classList.remove('expanded');
+                        toggleBtn.textContent = 'بیشتر...';
+                    }
+                }
+
+                toggleBtn.addEventListener('click', () => {
+                    setExpanded(!cardData.expanded);
+                });
+
+                // اگر قبلاً باز بوده (در بازسازی بعد از تغییر اندازه)
+                if (cardData.expanded) {
+                    // به تأخیر نیاز داریم تا المنت در DOM باشد و scrollHeight محاسبه شود
+                    // بنابراین بعد از اینکه کارت به DOM اضافه شد اجرا می‌شود (بیرون از تابع)
+                }
+
+                descWrapper.appendChild(descText);
+                descWrapper.appendChild(toggleBtn);
+
+                body.appendChild(titleEl);
+                body.appendChild(descWrapper);
+                card.appendChild(body);
+
+                // ذخیره ارجاعات لازم برای اعمال حالت باز
+                card._descText = descText;
+                card._toggleBtn = toggleBtn;
+                card._setExpanded = setExpanded;
+                card._cardData = cardData;
+
+                return card;
+            }
+
+            // ========================
+            // چیدمان ستونی و واکنش‌گرا
+            // ========================
+            function getColumnCount() {
+                const width = window.innerWidth;
+                if (width < 768) return 1;
+                if (width < 992) return 2;
+                return 3;
+            }
+
+            let currentColumnCount = getColumnCount();
+
+            function renderCards() {
+                const colCount = getColumnCount();
+
+                // اگر تعداد ستون‌ها تغییر نکرده باشد، نیازی به بازسازی نیست
+                if (colCount === currentColumnCount && cardsGrid.children.length > 0) {
+                    return;
+                }
+                currentColumnCount = colCount;
+
+                // پاک‌سازی ظرف اصلی
+                cardsGrid.innerHTML = '';
+
+                // ایجاد ستون‌ها
+                const columns = [];
+                for (let i = 0; i < colCount; i++) {
+                    const col = document.createElement('div');
+                    col.className = 'column';
+                    cardsGrid.appendChild(col);
+                    columns.push(col);
+                }
+
+                // توزیع کارت‌ها به صورت ردیفی (row-major)
+                cardsData.forEach((cardData, index) => {
+                    const colIndex = index % colCount;
+                    const cardEl = createCardElement(cardData);
+                    columns[colIndex].appendChild(cardEl);
+
+                    // اگر کارت قبلاً باز بوده، اکنون که در DOM قرار گرفته آن را باز کن
+                    if (cardData.expanded) {
+                        // استفاده از requestAnimationFrame برای اطمینان از رندر شدن
+                        requestAnimationFrame(() => {
+                            cardEl._setExpanded(true);
+                        });
+                    }
+                });
+            }
+
+            // نخستین رندر
+            renderCards();
+
+            // رندر مجدد در صورت تغییر اندازه (با debounce ساده)
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    renderCards();
+                }, 150);
+            });
+        })();
+    </script>
+</body>
+</html>

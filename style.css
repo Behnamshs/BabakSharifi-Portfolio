@@ -1,0 +1,309 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body {
+    background-color: #e9edf8;
+    width: 100%;
+    /* ارتفاع رو حذف کن چون باعث مشکل میشه وقتی محتوا زیاد میشه */
+    /* height: 150vh;  این رو برداریم */
+    min-height: 100vh; /* حداقل ارتفاع صفحه رو داشته باشه */
+    z-index: 1;
+    padding-bottom: 80px; /* این رو اضافه کن تا nav پایین صفحه رو نپوشونه */
+    transition: background-color 0.5s ease, color 0.5s ease; /* انیمیشن نرم برای تغییر تم */
+}
+.page-fade-in {
+    opacity: 0;
+    visibility: hidden; /* این باعث میشه اول کار دیده نشه */
+    transition: opacity 0.8s ease-out, visibility 0.8s ease-out; /* انیمیشن نرم‌تر */
+}
+
+.page-fade-in.is-visible {
+    opacity: 1;
+    visibility: visible; /* بعد از لود شدن قابل دیدن میشه */
+}
+.theme-toggle {
+    position: absolute; /* ثابت در صفحه */
+    top: 20px; /* از بالا 20px */
+    right: 20px; /* از راست 20px */
+    z-index: 1000; /* مطمئن شیم روی بقیه چیزا قرار میگیره */
+}
+
+#theme-switcher {
+    background: none; /* بدون پس‌زمینه */
+    border: none; /* بدون حاشیه */
+    cursor: pointer; /* نشانگر موس به شکل دست */
+    padding: 8px; /* پدینگ برای راحت‌تر کلیک کردن */
+    border-radius: 50%; /* گرد بشه */
+    transition: background-color 0.3s ease; /* انیمیشن برای تغییر رنگ پس‌زمینه */
+}
+
+#theme-switcher:hover {
+    background-color: rgba(0, 0, 0, 0.05); /* یه رنگ ملایم موقع هاور */
+}
+
+/* استایل برای آیکون‌های SVG */
+.theme-icon {
+    width: 28px; /* سایز آیکون */
+    height: 28px;
+    color: #333; /* رنگ آیکون در حالت روشن */
+    display: none; /* پیش‌فرض مخفی */
+}
+
+.theme-icon.active {
+    display: block; /* آیکون فعال نمایش داده میشه */
+}
+
+/* استایل برای حالت دارک مود */
+body.dark-mode .theme-icon {
+    color: #f0f0f0; /* رنگ آیکون در حالت تاریک */
+}
+body.dark-mode #theme-switcher:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* هاور در دارک مود */
+}
+/* --- DARK MODE STYLES REVISED --- */
+
+body.dark-mode {
+    background-color: #22223b !important; /* پس‌زمینه تیره */
+    color: #f0f0f0 !important; /* متن روشن */
+    transition: background-color 0.5s ease, color 0.5s ease; /* انیمیشن نرم برای تغییر تم */
+}
+
+/* برای پروفایل */
+body.dark-mode .profile {
+    background-color: #22223b !important; /* پس‌زمینه تیره تر برای پروفایل */
+    color: #f0f0f0 !important;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* برای عنوان‌ها */
+body.dark-mode .name,
+body.dark-mode .description {
+    color: #e0e0e0 !important; /* رنگ عنوان‌ها */
+    transition: color 0.5s ease;
+}
+
+/* برای متن اصلی زیر description */
+body.dark-mode .about-text {
+    color: #cccccc !important; /* رنگ متن اصلی */
+    transition: color 0.5s ease;
+}
+
+/* برای لینک‌ها در متن اصلی */
+body.dark-mode .about-text a {
+    color: #8fb3ff !important; /* رنگ لینک‌ها در دارک مود */
+}
+
+/* برای nav بار */
+body.dark-mode .nav {
+    background-color: #0d0d1a !important; /* رنگ nav در دارک مود */
+    box-shadow: 0 -2px 10px rgba(255,255,255,0.1) !important; /* سایه روشن */
+    transition: background-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+/* برای divهای داخل nav */
+body.dark-mode .nav div {
+    background-color: #22223b !important; /* آیتم‌های nav در دارک مود */
+    transition: background-color 0.5s ease;
+}
+body.dark-mode .nav div a {
+    color: #e0e0e0 !important; /* رنگ آیکون‌ها در دارک مود */
+}
+body.dark-mode .nav div:hover {
+    background-color: #33334d !important;
+    box-shadow: 0 4px 15px rgba(255,255,255,0.1) !important;
+}
+/* برای هاور آیتم‌های nav در دارک مود */
+body.dark-mode .nav div:hover {
+    background-color: #33334d !important; /* هاور آیتم‌های nav در دارک مود */
+    box-shadow: 0 4px 15px rgba(255,255,255,0.1) !important;
+}
+
+/* برای لینک‌های داخل nav (اگر متنی هستند) */
+body.dark-mode .nav div a {
+    color: #e0e0e0 !important; /* رنگ لینک‌ها در nav */
+}
+
+/* برای آیکون‌های تم */
+body.dark-mode .theme-icon {
+    color: #f0f0f0 !important; /* رنگ آیکون در حالت تاریک */
+}
+body.dark-mode #theme-switcher:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important; /* هاور در دارک مود */
+}
+
+/* اگه افکت hover برای column ها رو پیاده کردی: */
+body.dark-mode .grid-wrap .column:hover {
+    background-color: #22223b !important; /* پس‌زمینه هاور در دارک مود */
+    box-shadow: 0 5px 15px rgba(255,255,255,0.15) !important; /* سایه هاور در دارک مود */
+}
+.profile{
+    width: 100%;
+    height: auto;
+    padding-top: 50px;
+    transition: background-color 0.5s ease, color 0.5s ease; /* انیمیشن نرم برای تغییر تم */
+    
+}
+.picture-bg{
+    width: 100%;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+.picture{
+    width: 200px;
+    height: 200px;
+    background-color: aqua;
+    overflow: hidden;
+    border-radius: 50%;
+    display: block;
+    opacity: 0;
+    /* بجای transform: scale(0.8) این رو بذار */
+    transform: translateY(-50px); /* از 50px بالاتر از جاش شروع کنه */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); 
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out, box-shadow 0.8s ease-out;
+}
+/* کلاس is-visible رو هم برای این عکس داریم */
+.picture.is-visible {
+    opacity: 1;
+    /* بجای transform: scale(1) این رو بذار */
+    transform: translateY(0); /* به جای اصلیش برگرده */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); 
+}
+.name{
+    text-align: center;
+    transition: background-color 0.5s ease, color 0.5s ease; /* انیمیشن نرم برای تغییر تم */
+}
+.description{
+    text-align: center;
+    transition: background-color 0.5s ease, color 0.5s ease; /* انیمیشن نرم برای تغییر تم */
+}
+.about-text {
+    text-align: justify; /* متن رو از دو طرف تراز میکنه */
+    margin-left: 2.5%; /* فاصله از سمت چپ */
+    margin-right: 2.5%; /* فاصله از سمت راست */
+    line-height: 1.6; /* فاصله بین خطوط برای خوانایی بهتر */
+    padding-bottom: 30px; /* یکم فاصله از پایین این بخش بده */
+    color: #444; /* رنگ متن رو یه کم تیره‌تر کردم که خواناتر باشه */
+    transition: background-color 0.5s ease, color 0.5s ease; /* انیمیشن نرم برای تغییر تم */
+}
+.nav {
+    position: fixed;
+    bottom: 1.25%;
+    top: unset;
+    
+    width: 90%;
+    height: 60px;
+    border-radius: 16px;
+    background-color: black;
+    z-index: 999999999999999999999999999999999;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-self: center;
+    gap: 2%; /* این gap میتونه فاصله بین آیتم ها رو تنظیم کنه */
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    transition: background-color 0.5s ease, box-shadow 0.5s ease; /* برای تغییر نرم تم */
+    max-width: 600px;
+}
+
+.nav div {
+    width: 20%; /* هر آیتم 20% عرض nav رو بگیره */
+    height: 80%;
+    background-color: #e9edf8;
+    border-radius: 16px;
+    display: flex; /* برای مرکز قرار دادن آیکون */
+    justify-content: center; /* آیکون رو افقی وسط میاره */
+    align-items: center; /* آیکون رو عمودی وسط میاره */
+    transition: background-color 0.5s ease; /* برای تغییر نرم تم */
+}
+
+/* برای لینک‌های داخل nav (مطمئن شیم که آیکون وسط قرار بگیره) */
+.nav div a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    text-decoration: none; /* خط زیر لینک رو برمیداره */
+    color: #333; /* رنگ پیش‌فرض آیکون‌ها */
+    transition: color 0.5s ease; /* برای تغییر نرم تم */
+}
+
+/* استایل برای خود آیکون‌ها */
+.nav-icon {
+    width: 28px; /* سایز آیکون‌ها */
+    height: 28px;
+    /* رنگ آیکون رو از color پدرش (<a>) میگیره */
+}
+
+/* افکت هاور روی آیتم‌های nav */
+.nav div:hover {
+    background-color: #d0d7e6; /* رنگ روشن‌تر موقع هاور */
+    transform: scale(1.05); /* کمی بزرگتر بشه */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* یه سایه ملایم */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+.tag{
+    text-align: left;
+    margin-left: 2.5%;
+    margin-top: 15px;
+    transition: color .5s ease;
+}
+.grid-wrap {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* پیش‌فرض: ۴ ستون در صفحه بزرگ */
+  gap: 16px;
+  padding: 16px;
+  
+}
+
+.column {
+  display: grid;
+  grid-auto-rows: minmax(auto, max-content);
+  gap: 8px;
+  padding: 8px;
+  padding-top: 0;
+  /*border: 1px solid #ddd;*/
+  border-radius: 8px;
+  
+}
+.column p{
+    display: list-item;
+    list-style-type: disc;
+}
+.column p:hover{
+    color: #aeaeae;
+}
+/* برای هر column داخل grid-wrap */
+.grid-wrap .column {
+    opacity: 0;
+    transform: translateY(20px); /* از 20px پایین‌تر شروع کنه */
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out; /* انیمیشن نرم */
+}
+
+/* این کلاس حالا فقط با observer اضافه میشه */
+.grid-wrap .column.is-visible {
+    opacity: 1;
+    transform: translateY(0); /* به جای اصلیش برگرده */
+}
+.info{
+    display: grid;
+    
+    gap: 16px;
+    padding: 26px;
+  /*border: 1px solid #ddd;*/
+    border-radius: 8px;
+}
+.info p{
+    display: list-item;
+    list-style-type: disc;
+}
+@media (max-width: 600px) {
+  .grid-wrap {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
