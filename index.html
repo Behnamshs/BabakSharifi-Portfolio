@@ -140,78 +140,6 @@
       margin-bottom: 32px;
     }
 
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-bottom: 34px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 14px 20px;
-      border-radius: 14px;
-      font-size: 0.96rem;
-      font-weight: 600;
-      transition: 0.3s ease;
-      border: 1px solid transparent;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #3b82f6, #14b8a6);
-      color: #ffffff;
-      box-shadow: 0 16px 35px rgba(20, 184, 166, 0.22);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 22px 42px rgba(59, 130, 246, 0.28);
-    }
-
-    .btn-secondary {
-      background: rgba(255,255,255,0.07);
-      color: #e5e7eb;
-      border-color: rgba(255,255,255,0.12);
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255,255,255,0.11);
-      transform: translateY(-3px);
-    }
-
-    .quick-stats {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-      max-width: 680px;
-    }
-
-    .stat-card {
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.10);
-      border-radius: 18px;
-      padding: 18px;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-    }
-
-    .stat-number {
-      display: block;
-      color: #ffffff;
-      font-size: 1.35rem;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .stat-label {
-      color: #94a3b8;
-      font-size: 0.72rem;
-      line-height: 1.5;
-      text-transform: uppercase;
-    }
-
     .visual-card {
       position: relative;
       background: rgba(255,255,255,0.08);
@@ -382,10 +310,6 @@
         padding-top: 35px;
       }
 
-      .quick-stats {
-        grid-template-columns: 1fr;
-      }
-
       .profile-frame {
         height: 290px;
       }
@@ -428,36 +352,10 @@
               computational modeling, and physics-informed artificial intelligence to develop
               reliable, interpretable, and personalized health assessment technologies.
             </p>
-
-            <div class="hero-actions">
-              <a href="about-me.html" class="btn btn-primary">About Me</a>
-              <a href="article/article.html" class="btn btn-secondary">View Articles</a>
-              <a href="certificates/certificates.html" class="btn btn-secondary">Certificates</a>
-            </div>
-
-            <div class="quick-stats">
-              <div class="stat-card">
-                <span class="stat-number">AI</span>
-                <span class="stat-label">Biomedical Intelligence</span>
-              </div>
-
-              <div class="stat-card">
-                <span class="stat-number">Bio</span>
-                <span class="stat-label">Multimodal Biosensing</span>
-              </div>
-
-              <div class="stat-card">
-                <span class="stat-number">Health</span>
-                <span class="stat-label">Non-Invasive Diagnostics</span>
-              </div>
-            </div>
           </div>
 
           <aside class="visual-card">
             <div class="profile-frame">
-              <!-- اگر عکس داری این خط را فعال کن -->
-              <!-- <img src="img/profile.jpg" alt="Profile Photo"> -->
-
               <div class="profile-placeholder">
                 <img src="Img/profile.jpg" alt="">
               </div>
@@ -490,6 +388,15 @@
 
         <div class="preview-grid">
           <div class="preview-card">
+            <h3>About Me</h3>
+            <p>
+              Learn more about my background, research interests, profile information,
+              and long-term academic direction.
+            </p>
+            <a href="about-me.html">Read More →</a>
+          </div>
+
+          <div class="preview-card">
             <h3>Articles</h3>
             <p>
               Research-inspired articles, concepts, and biomedical technology ideas
@@ -499,21 +406,12 @@
           </div>
 
           <div class="preview-card">
-            <h3>Certificates</h3>
+            <h3>Projects</h3>
             <p>
-              Academic, technical, and professional certificates that reflect my learning
+              Academic, technical, and professional projects that reflect my learning
               path and research-oriented development.
             </p>
-            <a href="certificates/certificates.html">View Certificates →</a>
-          </div>
-
-          <div class="preview-card">
-            <h3>About Me</h3>
-            <p>
-              Learn more about my background, research interests, profile information,
-              and long-term academic direction.
-            </p>
-            <a href="about-me.html">Read More →</a>
+            <a href="certificates/certificates.html">View Projects →</a>
           </div>
         </div>
       </div>
