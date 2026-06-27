@@ -1,0 +1,215 @@
+* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            direction: ltr;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f5f7;
+            padding: 2rem 1rem;
+            color: #2c3e50;
+            min-height: 100vh;
+        }
+
+        h1.page-title {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            font-size: 2.2rem;
+            color: #1e293b;
+        }
+
+        /* ----- نگهدارنده اصلی ----- */
+        .cards-grid {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            align-items: flex-start;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* ----- هر ستون یک واحد مستقل ----- */
+        .column {
+            flex: 1 1 0;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* ----- خود کارت ----- */
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: box-shadow 0.3s;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ----- بخش تصویر ----- */
+        .card-image {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            background: #e2e8f0;
+            cursor: pointer;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s;
+        }
+
+        .card:hover .card-image img {
+            transform: scale(1.03);
+        }
+
+        /* دکمه فول‌اسکرین پایین سمت راست */
+        .fullscreen-btn {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.55);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .fullscreen-btn:hover {
+            background: rgba(0, 0, 0, 0.75);
+            transform: scale(1.1);
+        }
+
+        .fullscreen-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+        }
+
+        /* ----- محتوای متنی ----- */
+        .card-body {
+            padding: 1.2rem 1.2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            flex: 1;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0;
+        }
+
+        .desc-wrapper {
+            position: relative;
+        }
+
+        .desc-text {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: #475569;
+            max-height: 3.6em; /* دو خط */
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            margin: 0;
+        }
+
+        .desc-text.expanded {
+            max-height: 500px; /* بعداً با js به اندازه واقعی تنظیم می‌شود */
+        }
+
+        .toggle-desc {
+            display: inline-block;
+            color: #2563eb;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 0.3rem;
+            background: none;
+            border: none;
+            padding: 0;
+            transition: color 0.2s;
+        }
+
+        .toggle-desc:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+
+        /* ----- فول‌اسکرین مودال ----- */
+        .lightbox-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.92);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .lightbox-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox-overlay img {
+            max-width: 92%;
+            max-height: 92%;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .close-lightbox {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 2.5rem;
+            color: #fff;
+            cursor: pointer;
+            background: none;
+            border: none;
+            line-height: 1;
+            transition: transform 0.2s;
+        }
+
+        .close-lightbox:hover {
+            transform: scale(1.2);
+        }
+
+        /* ----- واکنش‌گرایی ----- */
+        @media (max-width: 760px) {
+            .cards-grid {
+                flex-direction: column;
+            }
+        }
